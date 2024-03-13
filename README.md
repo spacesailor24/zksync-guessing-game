@@ -9,7 +9,9 @@ The `GuessingGame` contract address: [0x66F4a95B8fF0D65Dd0c722433d3dD8917194005B
 
 - [Project Layout](#project-layout)
 - [Project Considerations](#project-considerations)
-- [NPM Scripts](#npm-scripts)
+- [Running this Project](#running-this-project)
+  - [Getting Started](#getting-started)
+  - [NPM Scripts](#npm-scripts)
   - [Environment Settings](#environment-settings)
   - [Network Support](#network-support)
   - [Local Tests](#local-tests)
@@ -28,7 +30,7 @@ Contracts:
 
 Frontend:
 
-- `/src`: Contains the Vue.js frontend
+- `/frontend`: Contains the Vue.js frontend
 
 ## Project Considerations
 
@@ -47,7 +49,18 @@ Frontend:
     However, it also says that correct guess get `80%` of the contract's balance:
     > If players guess the number, they get 80% of the contract value plus 100 GUESS tokens
 
-## NPM Scripts
+## Running this Project
+
+### Getting Started
+
+1. `git clone git@github.com:spacesailor24/zksync-guessing-game.git`
+2. `pnpm i`
+
+- `pnpm run test` Will compiled the contracts and run the tests
+- `pnpm run dev` Will start the Vue.js frontend and serve it locally
+  - The frontend is configured to communicate with the deployed `GuessingGame` on zksync Sepolia
+
+### NPM Scripts
 
 - `pnpm run dev`: Starts the frontend on a `localhost` server.
 - `pnpm run build`: Builds the Vue.js frontend for deployment.
