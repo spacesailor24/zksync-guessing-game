@@ -5,13 +5,11 @@
   "author": "Matter Labs",
   "license": "MIT",
   "repository": "https://github.com/matter-labs/zksync-hardhat-template.git",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview",
+    "dev": "cd frontend && vite",
+    "build": "cd frontend && vue-tsc && vite build",
+    "preview": "cd frontend && vite preview",
     "deploy": "hardhat deploy-zksync --script deploy.ts",
-    "interact": "hardhat deploy-zksync --script interact.ts",
     "compile": "hardhat compile",
     "clean": "hardhat clean",
     "test": "hardhat test --network hardhat"
