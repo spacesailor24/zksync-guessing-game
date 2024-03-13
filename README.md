@@ -3,8 +3,6 @@
 
 This project contains A Guessing Game contract where the owner of the game set the `keccak256` hash of a secret number. Players then pay an addmission fee (`0.001 ether`) to attempt to guess the secret number. If their guess is incorrect, their admission fee gets added to the reward pot. If the guess is correct, the player gets `80%` of the reward pot, plus `100 GUESS` tokens.
 
-This project was scaffolded with [zksync-cli](https://github.com/matter-labs/zksync-cli).
-
 - [Project Layout](#project-layout)
 - [Project Considerations](#project-considerations)
 - [How to Use](#how-to-use)
@@ -14,6 +12,8 @@ This project was scaffolded with [zksync-cli](https://github.com/matter-labs/zks
 - [License](#license)
 
 ## Project Layout
+
+This project was scaffolded with [zksync-cli](https://github.com/matter-labs/zksync-cli).
 
 - `/contracts`: Contains solidity smart contracts.
 - `/deploy`: Scripts for contract deployment and interaction.
