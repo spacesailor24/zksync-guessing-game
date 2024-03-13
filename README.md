@@ -1,11 +1,16 @@
 <!-- omit from toc -->
 # Guessing Game
 
-This project contains A Guessing Game contract where the owner of the game set the `keccak256` hash of a secret number. Players then pay an addmission fee (`0.001 ether`) to attempt to guess the secret number. If their guess is incorrect, their admission fee gets added to the reward pot. If the guess is correct, the player gets `80%` of the reward pot, plus `100 GUESS` tokens.
+This project contains a Guessing Game contract where the owner of the game sets the `keccak256` hash of a secret number. Players then pay an addmission fee (`0.001 ether`) to attempt to guess the secret number. If their guess is incorrect, their admission fee gets added to the reward pool. If the guess is correct, the player gets `80%` of the reward pool, plus `100 GUESS` tokens.
 
-The `GUESS` token contract address: [0x52606D135bDfdDe9f34dbC185261dee0bc42B236](https://sepolia.explorer.zksync.io/address/0x52606D135bDfdDe9f34dbC185261dee0bc42B236#transactions)
+A dApp that utilizes a deployed version of this game on zksync Sepolia, is available at: [guessing-game.spacesailor.dev](https://guessing-game.spacesailor.dev/)
 
-The `GuessingGame` contract address: [0x66F4a95B8fF0D65Dd0c722433d3dD8917194005B](https://sepolia.explorer.zksync.io/address/0x66F4a95B8fF0D65Dd0c722433d3dD8917194005B#transactions)
+The `GUESS` token contract address on zksync Sepolia: [0x52606D135bDfdDe9f34dbC185261dee0bc42B236](https://sepolia.explorer.zksync.io/address/0x52606D135bDfdDe9f34dbC185261dee0bc42B236#transactions)
+
+The `GuessingGame` contract address on zksync Sepolia: [0x66F4a95B8fF0D65Dd0c722433d3dD8917194005B](https://sepolia.explorer.zksync.io/address/0x66F4a95B8fF0D65Dd0c722433d3dD8917194005B#transactions)
+
+<!-- omit from toc -->
+## Table of Contents
 
 - [Project Layout](#project-layout)
 - [Project Considerations](#project-considerations)
@@ -36,11 +41,11 @@ Frontend:
 
 - This project utilizes ethers.js v5
   - This is due to [a bug](https://github.com/matter-labs/zksync-cli/issues/127) I came across trying to use v6
-- I've opted to include the deployment of the `GUESS` token within the constructor of `GuessingGame`, instead of allowing an address of an existing token to be passed in `GuessingGame`'s `constructor`
-  - The spec doesn't mention a preference, but it does say to: `Pre-mint some tokens in the constructor`. While possible to know the `GuessingGame`'s address ahead of time (utilizing a proxy deployer, or `CREATE2`), I've opted for the simpler approach of deploying a new instance of `GUESS` upon instantiation of `GuessingGame`, so that the pre-minted tokens are minted to `GuessingGame`, and no extra `approve` or `transfer` step needs to be done from the deployer of `GUESS` token to `GuessingGame` (so that `GuessingGame` has token to award correct guesses)
-    - This does have a limitation that a new `GUESS` token is deployed each time a new `GuessingGame` is deployed i.e. a `GUESS` token contract cannot be reused
+- I've opted to include the deployment of the `GUESS` token within the constructor of `GuessingGame` instead of allowing an address of an existing token to be passed in `GuessingGame`'s `constructor`
+  - The spec doesn't mention a preference, but it does say to: `Pre-mint some tokens in the constructor`. While it's possible to know the `GuessingGame`'s address ahead of time (utilizing a proxy deployer, or `CREATE2`), I've opted for the simpler approach of deploying a new instance of `GuessingToken` upon instantiation of `GuessingGame`. The pre-minted tokens are then minted to `GuessingGame`, resulting in no need for an extra `approve` or `transfer` step to give `GuessingGame` tokens to award correct guesses
+    - This does have a limitation that a new `GuessingToken` is deployed each time a new `GuessingGame` is deployed i.e. an existing `GuessingToken` contract cannot be reused for multiple games
     - Additionally, I've added a `mint` function to `GuessingGame` that wraps `GuessingToken`'s `mint` function to allow the deployer (i.e. owner) of `GuessingGame` to mint additional token for `GuessingGame` if needed
-      - I've hardcoded the address of `GuessingGame` as the recipient in this `mint` function, so that the `GuessingGame` owner can't mint tokens to any arbitary address
+      - I've hardcoded the address of `GuessingGame` as the recipient in this `mint` function, so that the `GuessingGame` owner can't mint tokens to an arbitary address
 - `80%` of the contracts balance is always awarded for correct guesses, even if the first guess is correct
   - This means that if the first player to ever guess guesses correctly on their first try, they will only receive `80%` of their admission price
   - In my mind, it makes sense that the player should receive `100%` of the admission price since the spec says the admission price is only added to the contract's balance if the guess is incorrect:
@@ -56,9 +61,11 @@ Frontend:
 1. `git clone git@github.com:spacesailor24/zksync-guessing-game.git`
 2. `pnpm i`
 
-- `pnpm run test` Will compiled the contracts and run the tests
+- `pnpm run test` Will compile the contracts and run the tests
+- `pnpm run deploy --network zkSyncSepoliaTestnet` Will deploy the contracts to zksync Sepolia
+  - This steps requires a private key to be specified in `.env` (See [Environment Settings](#environment-settings))
 - `pnpm run dev` Will start the Vue.js frontend and serve it locally
-  - The frontend is configured to communicate with the deployed `GuessingGame` on zksync Sepolia
+  - The frontend is preconfigured to communicate with the deployed `GuessingGame` on zksync Sepolia
 
 ### NPM Scripts
 
