@@ -3,9 +3,13 @@
 
 This project contains A Guessing Game contract where the owner of the game set the `keccak256` hash of a secret number. Players then pay an addmission fee (`0.001 ether`) to attempt to guess the secret number. If their guess is incorrect, their admission fee gets added to the reward pot. If the guess is correct, the player gets `80%` of the reward pot, plus `100 GUESS` tokens.
 
+The `GUESS` token contract address: [0x52606D135bDfdDe9f34dbC185261dee0bc42B236](https://sepolia.explorer.zksync.io/address/0x52606D135bDfdDe9f34dbC185261dee0bc42B236#transactions)
+
+The `GuessingGame` contract address: [0x66F4a95B8fF0D65Dd0c722433d3dD8917194005B](https://sepolia.explorer.zksync.io/address/0x66F4a95B8fF0D65Dd0c722433d3dD8917194005B#transactions)
+
 - [Project Layout](#project-layout)
 - [Project Considerations](#project-considerations)
-- [How to Use](#how-to-use)
+- [NPM Scripts](#npm-scripts)
   - [Environment Settings](#environment-settings)
   - [Network Support](#network-support)
   - [Local Tests](#local-tests)
@@ -15,10 +19,16 @@ This project contains A Guessing Game contract where the owner of the game set t
 
 This project was scaffolded with [zksync-cli](https://github.com/matter-labs/zksync-cli).
 
+Contracts:
+
 - `/contracts`: Contains solidity smart contracts.
 - `/deploy`: Scripts for contract deployment and interaction.
 - `/test`: Test files.
 - `hardhat.config.ts`: Configuration settings.
+
+Frontend:
+
+- `/src`: Contains the Vue.js frontend
 
 ## Project Considerations
 
@@ -37,16 +47,19 @@ This project was scaffolded with [zksync-cli](https://github.com/matter-labs/zks
     However, it also says that correct guess get `80%` of the contract's balance:
     > If players guess the number, they get 80% of the contract value plus 100 GUESS tokens
 
-## How to Use
+## NPM Scripts
 
-- `pnpm run compile`: Compiles contracts.
+- `pnpm run dev`: Starts the frontend on a `localhost` server.
+- `pnpm run build`: Builds the Vue.js frontend for deployment.
+- `pnpm run preview`: Serves the production-ready build locally for previewing before deployment.
 - `pnpm run deploy`: Deploys using script `/deploy/deploy.ts`.
-- `pnpm run interact`: Interacts with the deployed contract using `/deploy/interact.ts`.
-- `pnpm run test`: Tests the contracts.
+- `pnpm run compile`: Compiles contracts.
+- `pnpm run clean`: Runs `hardhat clean`.
+- `pnpm run test`: Tests the contracts using a local backend.
 
 ### Environment Settings
 
-To keep private keys safe, this project pulls in environment variables from `.env` files. Primarily, it fetches the wallet's private key.
+To keep private keys safe, this project pulls in environment variables from `.env` files. Primarily, it fetches the wallet's private key used for contract deployment.
 
 Rename `.env.example` to `.env` and fill in your private key:
 
@@ -60,7 +73,7 @@ WALLET_PRIVATE_KEY=your_private_key_here...
 
 ### Local Tests
 
-Running `npm run test` by default runs the [zkSync In-memory Node](https://era.zksync.io/docs/tools/testing/era-test-node.html) provided by the [@matterlabs/hardhat-zksync-node](https://era.zksync.io/docs/tools/hardhat/hardhat-zksync-node.html) tool.
+Running `pnpm run test` by default runs the [zkSync In-memory Node](https://era.zksync.io/docs/tools/testing/era-test-node.html) provided by the [@matterlabs/hardhat-zksync-node](https://era.zksync.io/docs/tools/hardhat/hardhat-zksync-node.html) tool.
 
 Important: zkSync In-memory Node currently supports only the L2 node. If contracts also need L1, use another testing environment like Dockerized Node. Refer to [test documentation](https://era.zksync.io/docs/tools/testing/) for details.
 
