@@ -50,6 +50,16 @@ contract GuessingGame is Ownable, ReentrancyGuard {
     }
 
     /**
+     * Mints a specified amount of tokens to the address of `guessingToken`. This method
+     * is intended to be used to "top up" this contract's balance of reward tokens. 
+     * @param _amount The amount of `guessingToken` to mint to this contract.
+     * @notice Only the owner of this contract can call this method.
+     */
+    function mint(uint256 _amount) public onlyOwner {
+        guessingToken.mint(address(this), _amount);
+    }
+
+    /**
      * Allows players to submit a number in attempt to guess the secret number set by the owner.
      * If the guess is incorrect, the `ADMISSION_PRICE` submitted by the player is kept and added to the
      * reward pot. If the guess is correct, the player is awarded 80% of the contract's balance, and 
@@ -58,6 +68,8 @@ contract GuessingGame is Ownable, ReentrancyGuard {
      *               e.g. `1` should be submitted as `0x0000000000000000000000000000000000000000000000000000000000000001`.
      * @notice `IncorrectGuess` event is emitted for incorrect guesses.
      * @notice `CorrectGuess` event is emitted for correct guesses.
+     * @notice This contract makes use of OpenZeppelin's `nonReentrant` function modifier to protect the `.call`
+     *         made to `msg.sender` on correct guesses.
      */
     function guess(uint256 _guess) public payable nonReentrant {
         if (msg.value != ADMISSION_PRICE) revert IncorrectAdmissionPrice(msg.value, ADMISSION_PRICE);

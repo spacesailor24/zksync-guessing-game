@@ -13,6 +13,7 @@ describe("GuessingGame", function () {
   const INITIAL_SECRET_NUMBER_HASH = keccak256(hexZeroPad(hexlify(INITIAL_SECRET_NUMBER), 32));
   const NEW_SECRET_NUMBER = 24;
   const NEW_SECRET_NUMBER_HASH = keccak256(hexZeroPad(hexlify(NEW_SECRET_NUMBER), 32));
+  const INITIAL_REWARD_TOKEN_BALANCE = BigNumber.from(parseEther("100000"));
 
   let ownerWallet: Wallet;
   let userWallet: Wallet;
@@ -53,6 +54,29 @@ describe("GuessingGame", function () {
 
     const numberHash = await gameContract.secretNumberHash();
     expect(numberHash).to.equal(NEW_SECRET_NUMBER_HASH);
+  });
+
+  it("Should not allow userWallet to mint more reward tokens", async function () {
+    await expect(
+        gameContract.connect(userWallet).mint(1)
+    ).to.be.revertedWith("Ownable: caller is not the owner");
+
+    // Sanity check
+    const gameContractBalance = await tokenContract.balanceOf(gameContract.address);
+    expect(gameContractBalance).to.equal(INITIAL_REWARD_TOKEN_BALANCE);
+  });
+
+  it("Should allow ownerWallet to mint more reward tokens only to gameContract", async function () {
+    const newTokenAmount = parseEther('42');
+
+    await gameContract.connect(ownerWallet).mint(newTokenAmount);
+
+    const gameContractBalance = await tokenContract.balanceOf(gameContract.address);
+    expect(gameContractBalance).to.equal(INITIAL_REWARD_TOKEN_BALANCE.add(newTokenAmount));
+
+    // Sanity check
+    const ownerBalance = await tokenContract.balanceOf(ownerWallet.address);
+    expect(ownerBalance).to.equal(0);
   });
 
   it("Should revert with IncorrectAdmissionPrice when 0 ETH is sent", async function () {
