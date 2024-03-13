@@ -3,7 +3,9 @@
 
 This project contains a Guessing Game contract where the owner of the game sets the `keccak256` hash of a secret number. Players then pay an addmission fee (`0.001 ether`) to attempt to guess the secret number. If their guess is incorrect, their admission fee gets added to the reward pool. If the guess is correct, the player gets `80%` of the reward pool, plus `100 GUESS` tokens.
 
-A dApp that utilizes a deployed version of this game on zksync Sepolia, is available at: [guessing-game.spacesailor.dev](https://guessing-game.spacesailor.dev/)
+A dApp that utilizes a deployed version of this game on zksync Sepolia, is available at:
+
+[guessing-game.spacesailor.dev](https://guessing-game.spacesailor.dev/)
 
 The `GUESS` token contract address on zksync Sepolia: [0x52606D135bDfdDe9f34dbC185261dee0bc42B236](https://sepolia.explorer.zksync.io/address/0x52606D135bDfdDe9f34dbC185261dee0bc42B236#transactions)
 
